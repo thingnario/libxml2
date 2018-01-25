@@ -74,9 +74,6 @@ typedef unsigned __int64 uint64_t;
 static int compute_minrun(const uint64_t);
 
 #ifndef CLZ
-#ifdef __GNUC__
-#define CLZ __builtin_clzll
-#else
 
 static int clzll(uint64_t);
 
@@ -123,7 +120,6 @@ static int clzll(uint64_t x) {
 }
 
 #define CLZ clzll
-#endif
 #endif
 
 static __inline int compute_minrun(const uint64_t size) {
