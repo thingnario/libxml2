@@ -6,6 +6,8 @@ if [ $# -ne 1 ]; then
     exit 1
 fi
 
+export PATH="$PATH:$1/bin"
+
 tool_chain_path=$1
 
 # linux architecture 
