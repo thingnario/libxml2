@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 if [ $# -ne 1 ]; then
     echo $0: usage: cross_compile_library.sh ARCH 
@@ -6,7 +7,9 @@ if [ $# -ne 1 ]; then
     exit 1
 fi
 
-export PATH="$PATH:$1/bin"
+export PATH="$1/bin:$PATH"
+#export C_INCLUDE_PATH="$1/include"
+
 
 tool_chain_path=$1
 
@@ -25,8 +28,7 @@ export RANLIB=${ARCH}-ranlib
 export CC=${ARCH}-gcc
 export NM=${ARCH}-nm
 
-./autogen.sh
-./configure --host=${ARCH} --prefix=$tool_chain_path ARCH=${ARCH} --without-python --without-iconv --without-zlib --without-lzma
+./autogen.sh --host=${ARCH} --prefix=$tool_chain_path ARCH=${ARCH} --without-python --without-iconv --without-zlib --without-lzma
 make clean
-make 
+make -d
 sudo "PATH=$PATH" make install
