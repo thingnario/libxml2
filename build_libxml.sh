@@ -30,5 +30,5 @@ export NM=${ARCH}-nm
 
 ./autogen.sh --host=${ARCH} --prefix=$tool_chain_path ARCH=${ARCH} --without-python --without-iconv --without-zlib --without-lzma
 make clean
-make -d
+make
 sudo "PATH=$PATH" make install
