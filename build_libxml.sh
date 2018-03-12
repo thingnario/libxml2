@@ -21,14 +21,24 @@ ARCH=`echo $item | sed -e 's/-gcc.*//g'`
 
 # ======== libxml with static build ========
 export ARCH=$ARCH
-export AR=${ARCH}-ar
-export AS=${ARCH}-as
-export LD=${ARCH}-ld
-export RANLIB=${ARCH}-ranlib
-export CC=${ARCH}-gcc
-export NM=${ARCH}-nm
+if [ "$ARCH" == "" ]; then
+	export AR=ar
+	export AS=as
+	export LD=ld
+	export RANLIB=ranlib
+	export CC=gcc
+	export NM=nm
+	./autogen.sh --prefix=$tool_chain_path --without-python --without-iconv --without-zlib --without-lzma
+else
+	export AR=${ARCH}-ar
+	export AS=${ARCH}-as
+	export LD=${ARCH}-ld
+	export RANLIB=${ARCH}-ranlib
+	export CC=${ARCH}-gcc
+	export NM=${ARCH}-nm
+	./autogen.sh --host=${ARCH} --prefix=$tool_chain_path ARCH=${ARCH} --without-python --without-iconv --without-zlib --without-lzma
+fi
 
-./autogen.sh --host=${ARCH} --prefix=$tool_chain_path ARCH=${ARCH} --without-python --without-iconv --without-zlib --without-lzma
 make clean
 make
 sudo "PATH=$PATH" make install
