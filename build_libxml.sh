@@ -1,15 +1,13 @@
 #!/bin/bash
 set -x
 
-if [ $# -ne 1 ]; then
-    echo $0: usage: cross_compile_library.sh ARCH 
-    echo "example: usage: cross_compile_library.sh [ arm-linux | arm-linux-gnueabihf | arm-linux-gnueabi ]"
-    exit 1
+if [ "$#" -ne 2 ]; then
+    echo "Usage: ./build_libxml.sh tool_chain_path install_path!"
+    echo "Example: ./build_libxml.sh /usr/local/arm-linux /Desktop/eric/logger/build/moxa-ia240/libxml"
+    exit
 fi
 
 export PATH="$1/bin:$PATH"
-#export C_INCLUDE_PATH="$1/include"
-
 
 tool_chain_path=$1
 
@@ -28,7 +26,7 @@ if [ "$ARCH" == "" ]; then
 	export RANLIB=ranlib
 	export CC=gcc
 	export NM=nm
-	./autogen.sh --prefix=$tool_chain_path --without-python --without-iconv --without-zlib --without-lzma
+	./autogen.sh --prefix=$2 --without-python --without-iconv --without-zlib --without-lzma
 else
 	export AR=${ARCH}-ar
 	export AS=${ARCH}-as
@@ -36,9 +34,9 @@ else
 	export RANLIB=${ARCH}-ranlib
 	export CC=${ARCH}-gcc
 	export NM=${ARCH}-nm
-	./autogen.sh --host=${ARCH} --prefix=$tool_chain_path ARCH=${ARCH} --without-python --without-iconv --without-zlib --without-lzma
+	./autogen.sh --host=${ARCH} --prefix=$2 ARCH=${ARCH} --without-python --without-iconv --without-zlib --without-lzma
 fi
 
 make clean
 make
-sudo "PATH=$PATH" make install
+make install
