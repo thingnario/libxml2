@@ -8,6 +8,7 @@ if [ "$#" -ne 2 ]; then
 fi
 
 export PATH="$1/bin:$PATH"
+export CPATH="$1/include"
 
 tool_chain_path=$1
 
@@ -40,3 +41,4 @@ fi
 make clean
 make
 make install
+rm -rf $2/lib/*.so
