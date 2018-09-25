@@ -41,4 +41,3 @@ fi
 make clean
 make
 make install
-rm -rf $2/lib/*.so
